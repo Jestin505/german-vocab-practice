@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocabulary Practice</title>
+    <title>A2 German Practice</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="mode-badge" id="mode-badge">Mode: English &rarr; German</div>
+        <div class="progress" id="question-counter">Question 1</div>
         
-        <select id="voice-select" class="voice-select">
-            <option>Loading voices...</option>
-        </select>
+        <div class="question-box">
+            <p id="instruction-text">Translate to German (include article if noun):</p>
+            <h2 id="question-word">Loading...</h2>
+        </div>
 
-        <div class="flashcard-area">
-            <h1 id="main-word" class="main-word">Loading...</h1>
-            <h2 id="translated-word" class="translated-word hidden"></h2>
-            <button id="play-audio-btn" class="play-audio-btn hidden">&#128266; Play Audio</button>
+        <div id="feedback-area" class="hidden">
+            <h3 id="correct-answer"></h3>
         </div>
 
         <div class="controls">
-            <button id="check-btn" class="action-btn check-btn">Check</button>
-            <button id="next-btn" class="action-btn next-btn">Next</button>
+            <button id="check-btn">Check</button>
+            <button id="next-btn" class="hidden">Next</button>
         </div>
     </div>
     <script src="app.js"></script>
