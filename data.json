@@ -1,50 +1,22 @@
 [
   {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1a",
-    "german": "Bulgarisch",
-    "english": "Bulgarian"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1a",
-    "german": "Deutsch",
-    "english": "German"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1a",
-    "german": "gut",
-    "english": "good"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1a",
-    "german": "die Autobahn, -en",
-    "english": "highway"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1a",
-    "german": "das Butterbrot, -e",
-    "english": "sandwich"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1a",
-    "german": "das Handtuch, \"-er",
-    "english": "towel"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1b",
-    "german": "die Sprache, -n",
-    "english": "language"
-  },
-  {
-    "chapter": "Kapitel 1: Guten Tag!",
-    "section": "1b",
     "german": "das Wort, \"-er",
-    "english": "word"
+    "english": "word",
+    "date": "2026-08-22"
+  },
+  {
+    "german": "die Sprache, -n",
+    "english": "language",
+    "date": "2026-08-23"
+  },
+  {
+    "german": "das Handtuch, \"-er",
+    "english": "towel",
+    "date": "2026-08-24"
+  },
+  {
+    "german": "die Autobahn, -en",
+    "english": "highway",
+    "date": "2026-08-24"
   }
 ]

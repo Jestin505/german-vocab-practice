@@ -11,38 +11,41 @@ body {
     text-align: center;
     width: 90%;
     max-width: 500px;
-}
-.card-container {
     background: white;
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+h1, h2 { color: #2c3e50; }
+.hidden { display: none !important; }
+.progress {
+    color: #888;
+    font-size: 14px;
     margin-bottom: 20px;
-    cursor: pointer;
-    position: relative;
-    padding: 20px;
 }
-.card-front, .card-back {
-    position: absolute;
-    width: 100%;
+.question-box { margin-bottom: 20px; }
+#instruction-text {
+    color: #e67e22;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+#question-word { font-size: 28px; margin: 0; }
+input[type="text"] {
+    width: 80%;
+    padding: 12px;
+    font-size: 18px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
     text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
 }
-.card-back {
-    display: none;
-    color: #2c3e50;
-    font-size: 22px;
+input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
 }
-.show-back .card-front { display: none; }
-.show-back .card-back { display: block; }
 button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     margin: 5px;
     border: none;
     border-radius: 6px;
@@ -50,7 +53,17 @@ button {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.2s;
+    font-weight: bold;
+    transition: background 0.2s;
 }
 button:hover { background-color: #0056b3; }
-.progress { margin-top: 15px; color: #666; font-weight: bold; }
+#check-btn { background-color: #28a745; }
+#check-btn:hover { background-color: #218838; }
+#feedback-area {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    font-size: 18px;
+}
+#correct-answer { color: #d35400; }
