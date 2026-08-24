@@ -4,39 +4,72 @@ let questionCount = 1;
 let isReverse = false;
 
 // DOM Elements
-const welcomeScreen = document.getElementById('welcome-screen');
-const practiceScreen = document.getElementById('practice-screen');
-const startBtn = document.getElementById('start-btn');
-const questionCounterEl = document.getElementById('question-counter');
-const instructionTextEl = document.getElementById('instruction-text');
-const questionWordEl = document.getElementById('question-word');
-const answerInput = document.getElementById('answer-input');
+const modeBadge = document.getElementById('mode-badge');
+const voiceSelect = document.getElementById('voice-select');
+const mainWordEl = document.getElementById('main-word');
+const translatedWordEl = document.getElementById('translated-word');
+const playAudioBtn = document.getElementById('play-audio-btn');
 const checkBtn = document.getElementById('check-btn');
 const nextBtn = document.getElementById('next-btn');
-const feedbackArea = document.getElementById('feedback-area');
-const correctAnswerEl = document.getElementById('correct-answer');
 
-// Load Data
-fetch('data.json')
-    .then(response => response.json())
-    .then(data => { vocabData = data; })
-    .catch(error => console.error("Error loading data:", error));
-
-// Start Practice
-startBtn.addEventListener('click', () => {
-    if (vocabData.length === 0) {
-        alert("No vocabulary data found!");
+// --- Text-to-Speech Setup ---
+let voices = [];
+function populateVoiceList() {
+    voices = speechSynthesis.getVoices();
+    voiceSelect.innerHTML = '';
+    
+    // Filter to prioritize German and English voices
+    const relevantVoices = voices.filter(v => v.lang.startsWith('de') || v.lang.startsWith('en'));
+    
+    if (relevantVoices.length === 0) {
+        voiceSelect.innerHTML = '<option>Default Voice (No specific language detected)</option>';
         return;
     }
-    welcomeScreen.classList.add('hidden');
-    practiceScreen.classList.remove('hidden');
-    loadNextQuestion();
-});
+
+    relevantVoices.forEach((voice) => {
+        const option = document.createElement('option');
+        option.textContent = `${voice.name} (${voice.lang})`;
+        option.setAttribute('data-name', voice.name);
+        voiceSelect.appendChild(option);
+    });
+    
+    // Auto-select a German voice by default if available
+    const defaultDe = relevantVoices.findIndex(v => v.lang.startsWith('de'));
+    if(defaultDe !== -1) voiceSelect.selectedIndex = defaultDe;
+}
+
+populateVoiceList();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoiceList;
+}
+
+function playAudio(text, langPrefix) {
+    if (!text) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    const selectedVoiceName = voiceSelect.options[voiceSelect.selectedIndex]?.getAttribute('data-name');
+    
+    if (selectedVoiceName) {
+        utterance.voice = voices.find(v => v.name === selectedVoiceName);
+    }
+    utterance.lang = langPrefix === 'de' ? 'de-DE' : 'en-US';
+    speechSynthesis.speak(utterance);
+}
+
+// --- Data & Logic ---
+fetch('data.json')
+    .then(response => response.json())
+    .then(data => {
+        vocabData = data;
+        if(vocabData.length > 0) loadNextQuestion();
+        else mainWordEl.textContent = "No data found!";
+    })
+    .catch(error => {
+        console.error("Error loading data:", error);
+        mainWordEl.textContent = "Error loading data.";
+    });
 
 function getWeightedRandomWord() {
-    // 1. Group dates and find the newest, second newest, and older
     const uniqueDates = [...new Set(vocabData.map(item => item.date))].sort().reverse();
-    
     const newestDate = uniqueDates[0];
     const secondNewestDate = uniqueDates.length > 1 ? uniqueDates[1] : newestDate;
     
@@ -44,75 +77,51 @@ function getWeightedRandomWord() {
     const secondNewestWords = vocabData.filter(item => item.date === secondNewestDate && item.date !== newestDate);
     const olderWords = vocabData.filter(item => item.date !== newestDate && item.date !== secondNewestDate);
 
-    // 2. Roll a number between 1 and 100
     const roll = Math.floor(Math.random() * 100) + 1;
     let selectedPool = [];
 
-    // 3. Apply the 60% / 20% / 20% logic
-    if (roll <= 60 && newestWords.length > 0) {
-        selectedPool = newestWords;
-    } else if (roll <= 80 && secondNewestWords.length > 0) {
-        selectedPool = secondNewestWords;
-    } else if (olderWords.length > 0) {
-        selectedPool = olderWords;
-    } else {
-        // Fallback if a category is empty
-        selectedPool = vocabData; 
-    }
+    if (roll <= 60 && newestWords.length > 0) selectedPool = newestWords;
+    else if (roll <= 80 && secondNewestWords.length > 0) selectedPool = secondNewestWords;
+    else if (olderWords.length > 0) selectedPool = olderWords;
+    else selectedPool = vocabData; 
 
-    // 4. Pick a random word from the selected pool
     const randomIndex = Math.floor(Math.random() * selectedPool.length);
     return selectedPool[randomIndex];
 }
 
 function loadNextQuestion() {
     currentWord = getWeightedRandomWord();
-    
-    // Every 4th question is a reverse question (German to English)
-    isReverse = (questionCount % 4 === 0);
+    isReverse = (questionCount % 4 === 0); // Reverse mode every 4th question
 
-    questionCounterEl.textContent = `Question ${questionCount}`;
-    
     if (isReverse) {
-        instructionTextEl.textContent = "Translate to English:";
-        questionWordEl.textContent = currentWord.german;
+        modeBadge.innerHTML = "Mode: German &rarr; English";
+        mainWordEl.textContent = currentWord.german;
+        translatedWordEl.textContent = currentWord.english;
     } else {
-        instructionTextEl.textContent = "Translate to German (include article if noun):";
-        questionWordEl.textContent = currentWord.english;
+        modeBadge.innerHTML = "Mode: English &rarr; German";
+        mainWordEl.textContent = currentWord.english;
+        translatedWordEl.textContent = currentWord.german;
     }
 
-    // Reset UI
-    answerInput.value = '';
-    answerInput.disabled = false;
-    answerInput.focus();
-    feedbackArea.classList.add('hidden');
-    checkBtn.classList.remove('hidden');
-    nextBtn.classList.add('hidden');
+    // Reset UI for the new word
+    translatedWordEl.classList.add('hidden');
+    playAudioBtn.classList.add('hidden');
 }
 
-// Check Button
+// --- Button Event Listeners ---
 checkBtn.addEventListener('click', () => {
-    answerInput.disabled = true; // Lock input
-    checkBtn.classList.add('hidden');
-    nextBtn.classList.remove('hidden');
-    feedbackArea.classList.remove('hidden');
-
-    if (isReverse) {
-        correctAnswerEl.textContent = currentWord.english;
-    } else {
-        correctAnswerEl.textContent = currentWord.german;
-    }
+    translatedWordEl.classList.remove('hidden');
+    playAudioBtn.classList.remove('hidden');
 });
 
-// Next Button
+playAudioBtn.addEventListener('click', () => {
+    // Determine which language to speak based on the current mode
+    const textToSpeak = translatedWordEl.textContent;
+    const lang = isReverse ? 'en' : 'de';
+    playAudio(textToSpeak, lang);
+});
+
 nextBtn.addEventListener('click', () => {
     questionCount++;
     loadNextQuestion();
-});
-
-// Allow hitting "Enter" to click buttons
-answerInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !checkBtn.classList.contains('hidden')) {
-        checkBtn.click();
-    }
 });
