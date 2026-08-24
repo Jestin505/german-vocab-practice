@@ -1,108 +1,68 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #f0f4f8;
+    height: 100vh;
+    background-color: #f4f4f9;
     margin: 0;
 }
 .container {
-    background: white;
+    text-align: center;
     width: 90%;
     max-width: 500px;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-.mode-badge {
-    background-color: #e2e8f0;
-    color: #334155;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    border: 1px solid #cbd5e1;
+h2 { 
+    color: #2c3e50; 
+    font-size: 32px; 
+    margin: 10px 0 30px 0;
 }
-.voice-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    margin-bottom: 40px;
+.hidden { display: none !important; }
+.progress {
+    color: #888;
     font-size: 14px;
-    color: #334155;
-    background-color: white;
-}
-.flashcard-area {
-    min-height: 220px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
     margin-bottom: 20px;
 }
-.main-word {
-    font-size: 54px;
-    color: #0f172a;
-    margin: 0 0 20px 0;
-}
-.translated-word {
-    font-size: 32px;
-    color: #0256a4;
-    margin: 0 0 20px 0;
-    font-weight: 600;
-}
-.play-audio-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+.question-box { margin-bottom: 20px; }
+#instruction-text {
+    color: #e67e22;
     font-size: 16px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     font-weight: bold;
-    transition: background-color 0.2s;
-}
-.play-audio-btn:hover {
-    background-color: #218838;
+    margin-bottom: 10px;
 }
 .controls {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
-.action-btn {
+button {
     padding: 12px 30px;
     border: none;
     border-radius: 6px;
+    color: white;
+    cursor: pointer;
     font-size: 18px;
     font-weight: bold;
-    cursor: pointer;
-    color: white;
-    transition: background-color 0.2s;
+    transition: background 0.2s;
+    min-width: 120px;
 }
-.check-btn {
-    background-color: #004b93;
+#check-btn { background-color: #28a745; }
+#check-btn:hover { background-color: #218838; }
+#next-btn { background-color: #007bff; }
+#next-btn:hover { background-color: #0056b3; }
+#feedback-area {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 6px;
 }
-.check-btn:hover {
-    background-color: #00366b;
-}
-.next-btn {
-    background-color: #6c757d;
-}
-.next-btn:hover {
-    background-color: #5a6268;
-}
-.hidden {
-    display: none !important;
+#correct-answer { 
+    color: #d35400; 
+    margin: 0;
+    font-size: 24px;
 }
