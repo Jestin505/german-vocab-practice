@@ -3,39 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A2 German Practice</title>
+    <title>Vocabulary Practice</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Welcome Screen -->
-        <div id="welcome-screen">
-            <h1>Netzwerk neu A1</h1>
-            <p>Vocabulary Training Module</p>
-            <button id="start-btn">Start Practice</button>
+        <div class="mode-badge" id="mode-badge">Mode: English &rarr; German</div>
+        
+        <select id="voice-select" class="voice-select">
+            <option>Loading voices...</option>
+        </select>
+
+        <div class="flashcard-area">
+            <h1 id="main-word" class="main-word">Loading...</h1>
+            <h2 id="translated-word" class="translated-word hidden"></h2>
+            <button id="play-audio-btn" class="play-audio-btn hidden">&#128266; Play Audio</button>
         </div>
 
-        <!-- Practice Screen -->
-        <div id="practice-screen" class="hidden">
-            <div class="progress" id="question-counter">Question 1</div>
-            
-            <div class="question-box">
-                <p id="instruction-text">Translate to German:</p>
-                <h2 id="question-word">Loading...</h2>
-            </div>
-
-            <div class="input-area">
-                <input type="text" id="answer-input" placeholder="Type your answer here..." autocomplete="off">
-            </div>
-
-            <div class="controls">
-                <button id="check-btn">Check</button>
-                <button id="next-btn" class="hidden">Next</button>
-            </div>
-
-            <div id="feedback-area" class="hidden">
-                <p>Correct answer: <strong id="correct-answer"></strong></p>
-            </div>
+        <div class="controls">
+            <button id="check-btn" class="action-btn check-btn">Check</button>
+            <button id="next-btn" class="action-btn next-btn">Next</button>
         </div>
     </div>
     <script src="app.js"></script>
