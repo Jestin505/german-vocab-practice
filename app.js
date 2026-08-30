@@ -201,7 +201,7 @@ const vocabData = [
   { "german": "das Subjekt, -e", "english": "subject", "date": "2026-08-28", "page": 7 },
   { "german": "über (+ A.)", "english": "about", "date": "2026-08-28", "page": 7 },
   { "german": "verabschieden", "english": "to say goodbye", "date": "2026-08-28", "page": 7 },
-  { "german": "das W-Wort, \"-er", "english": "w-word", "date": "2026-08-28", "page": 7 }
+  { "german": "das W-Wort, \"-er", "english": "w-word", "date": "2026-08-28", "page": 7 },
   { "german": "gern", "english": "glad", "date": "2026-08-30", "page": 8 },
   { "german": "die Leute (Pl.)", "english": "people", "date": "2026-08-30", "page": 8 },
   { "german": "fotografieren", "english": "to photograph", "date": "2026-08-30", "page": 8 },
