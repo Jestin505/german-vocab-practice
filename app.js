@@ -207,6 +207,7 @@ const vocabData = [
 let currentWord = null;
 let questionCount = 1;
 let isReverse = false;
+let usedIndices = []; // Tracks words already asked in this session
 
 // DOM Elements
 const startScreen = document.getElementById('start-screen');
@@ -221,26 +222,43 @@ const nextBtn = document.getElementById('next-btn');
 const feedbackArea = document.getElementById('feedback-area');
 const correctAnswerEl = document.getElementById('correct-answer');
 
-// 1. Transition from Start Screen to Practice Screen
 startBtn.addEventListener('click', () => {
     startScreen.classList.add('hidden');
     practiceScreen.classList.remove('hidden');
     loadNextQuestion();
 });
 
-// 2. The 60/20/20 Logic
-function getWeightedRandomWord() {
+function getNextWord() {
+    // 1. Check if all words have been exhausted
+    if (usedIndices.length >= vocabData.length) {
+        return null; // Signals end of quiz
+    }
+
     const uniqueDates = [...new Set(vocabData.map(item => item.date))].sort().reverse();
-    
     const newestDate = uniqueDates[0];
     const secondNewestDate = uniqueDates.length > 1 ? uniqueDates[1] : newestDate;
-    
-    const newestWords = vocabData.filter(item => item.date === newestDate);
-    const secondNewestWords = vocabData.filter(item => item.date === secondNewestDate && item.date !== newestDate);
-    const olderWords = vocabData.filter(item => item.date !== newestDate && item.date !== secondNewestDate);
+
+    let selectedPool = [];
+
+    // 2. First 10 questions must come from the newest date batch (unrepeated)
+    if (questionCount <= 10) {
+        const newestUnused = vocabData
+            .map((item, index) => ({ item, index }))
+            .filter(obj => obj.item.date === newestDate && !usedIndices.includes(obj.index));
+
+        if (newestUnused.length > 0) {
+            const randomObj = newestUnused[Math.floor(Math.random() * newestUnused.length)];
+            usedIndices.push(randomObj.index);
+            return randomObj.item;
+        }
+    }
+
+    // 3. Remaining questions use 60/20/20 weighted logic on remaining unused words
+    const newestWords = vocabData.map((item, index) => ({ item, index })).filter(obj => obj.item.date === newestDate && !usedIndices.includes(obj.index));
+    const secondNewestWords = vocabData.map((item, index) => ({ item, index })).filter(obj => obj.item.date === secondNewestDate && obj.item.date !== newestDate && !usedIndices.includes(obj.index));
+    const olderWords = vocabData.map((item, index) => ({ item, index })).filter(obj => obj.item.date !== newestDate && obj.item.date !== secondNewestDate && !usedIndices.includes(obj.index));
 
     const roll = Math.floor(Math.random() * 100) + 1;
-    let selectedPool = [];
 
     if (roll <= 60 && newestWords.length > 0) {
         selectedPool = newestWords;
@@ -249,18 +267,33 @@ function getWeightedRandomWord() {
     } else if (olderWords.length > 0) {
         selectedPool = olderWords;
     } else {
-        selectedPool = vocabData; 
+        // Fallback to any remaining unused words
+        selectedPool = vocabData.map((item, index) => ({ item, index })).filter(obj => !usedIndices.includes(obj.index));
     }
 
-    const randomIndex = Math.floor(Math.random() * selectedPool.length);
-    return selectedPool[randomIndex];
+    if (selectedPool.length > 0) {
+        const chosen = selectedPool[Math.floor(Math.random() * selectedPool.length)];
+        usedIndices.push(chosen.index);
+        return chosen.item;
+    }
+
+    return null;
 }
 
-// 3. Display Logic for Questions
 function loadNextQuestion() {
-    currentWord = getWeightedRandomWord();
-    
-    // Reverse Translation every 4 questions
+    currentWord = getNextWord();
+
+    // If no words are left, show the finish message
+    if (!currentWord) {
+        questionCounterEl.textContent = "";
+        instructionTextEl.textContent = "";
+        questionWordEl.textContent = "Please restart the quiz";
+        checkBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+        feedbackArea.classList.add('hidden');
+        return;
+    }
+
     isReverse = (questionCount % 4 === 0);
 
     questionCounterEl.textContent = `Question ${questionCount}`;
@@ -273,13 +306,11 @@ function loadNextQuestion() {
         questionWordEl.textContent = currentWord.english;
     }
 
-    // Reset visibility of elements
     feedbackArea.classList.add('hidden');
     checkBtn.classList.remove('hidden');
     nextBtn.classList.add('hidden');
 }
 
-// 4. Check Answer Button logic
 checkBtn.addEventListener('click', () => {
     checkBtn.classList.add('hidden');
     nextBtn.classList.remove('hidden');
@@ -292,7 +323,6 @@ checkBtn.addEventListener('click', () => {
     }
 });
 
-// 5. Next Button logic
 nextBtn.addEventListener('click', () => {
     questionCount++;
     loadNextQuestion();
