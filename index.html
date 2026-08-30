@@ -1,37 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>German Vocabulary A1</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 <body>
-    <!-- Start Screen -->
-    <div class="container" id="start-screen">
-        <h1>German Vocabulary A1</h1>
-        <p>Based on Netzwerk neu<br>August General batch<br>Tutor: </p>
-        <button id="start-btn" class="blue-btn">Start Practice</button>
-    </div>
-
-    <!-- Practice Screen -->
-    <div class="container hidden" id="practice-screen">
-        <div class="progress" id="question-counter">Question 1</div>
+    <div class="page-wrapper">
         
-        <div class="question-box">
-            <p id="instruction-text">Translate to German (include article if noun):</p>
-            <h2 id="question-word">Loading...</h2>
+        <!-- Main App Area -->
+        <div class="app-area">
+            <!-- Start Screen -->
+            <div class="container" id="start-screen">
+                <h1>German Vocabulary A1</h1>
+                <p>Based on Netzwerk neu<br>August General batch<br>Tutor:</p>
+                <button id="start-btn" class="blue-btn">Start Practice</button>
+            </div>
+
+            <!-- Practice Screen -->
+            <div class="container hidden" id="practice-screen">
+                <div class="progress" id="question-counter">Question 1</div>
+                
+                <div class="question-box">
+                    <p id="instruction-text">Translate to German (include article if noun):</p>
+                    <h2 id="question-word">Loading...</h2>
+                </div>
+
+                <div id="feedback-area" class="hidden">
+                    <h3 id="correct-answer"></h3>
+                </div>
+
+                <div class="controls">
+                    <button id="check-btn" class="green-btn">Check</button>
+                    <button id="next-btn" class="blue-btn hidden">Next</button>
+                </div>
+            </div>
         </div>
 
-        <div id="feedback-area" class="hidden">
-            <h3 id="correct-answer"></h3>
+        <!-- Dynamic Students Sidebar -->
+        <div class="students-sidebar">
+            <h3>Fellow Students</h3>
+            <ul id="student-list">
+                <li>Jestin</li>
+                <li>Aneesh</li>
+                <li>Nimisha</li>
+                <li>Liya J</li>
+                <!-- Add as many names as you need here -->
+            </ul>
         </div>
 
-        <div class="controls">
-            <button id="check-btn" class="green-btn">Check</button>
-            <button id="next-btn" class="blue-btn hidden">Next</button>
-        </div>
     </div>
     <script src="app.js"></script>
 </body>
-</html>
