@@ -1,47 +1,82 @@
-<body>
-    <div class="page-wrapper">
-        
-        <!-- Main App Area -->
-        <div class="app-area">
-            <!-- Start Screen -->
-            <div class="container" id="start-screen">
-                <h1>German Vocabulary A1</h1>
-                <p>Based on Netzwerk neu<br>August General batch<br>Tutor:</p>
-                <button id="start-btn" class="blue-btn">Start Practice</button>
-            </div>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    margin: 0;
+}
+.container {
+    text-align: center;
+    width: 90%;
+    max-width: 480px;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+h1 {
+    color: #2c3e50;
+    font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+p {
+    color: #6c757d;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+h2 { 
+    color: #2c3e50; 
+    font-size: 38px; 
+    margin: 10px 0 30px 0;
+}
+.hidden { display: none !important; }
 
-            <!-- Practice Screen -->
-            <div class="container hidden" id="practice-screen">
-                <div class="progress" id="question-counter">Question 1</div>
-                
-                <div class="question-box">
-                    <p id="instruction-text">Translate to German (include article if noun):</p>
-                    <h2 id="question-word">Loading...</h2>
-                </div>
+.progress {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.question-box { margin-bottom: 20px; }
+#instruction-text {
+    color: #e67e22; /* Matches the orange color from your image */
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background 0.2s;
+    min-width: 140px;
+}
+/* Button Styles matching your images */
+.green-btn { background-color: #28a745; }
+.green-btn:hover { background-color: #218838; }
 
-                <div id="feedback-area" class="hidden">
-                    <h3 id="correct-answer"></h3>
-                </div>
+.blue-btn { background-color: #0056b3; }
+.blue-btn:hover { background-color: #004494; }
 
-                <div class="controls">
-                    <button id="check-btn" class="green-btn">Check</button>
-                    <button id="next-btn" class="blue-btn hidden">Next</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dynamic Students Sidebar -->
-        <div class="students-sidebar">
-            <h3>Fellow Students</h3>
-            <ul id="student-list">
-                <li>Jestin</li>
-                <li>Aneesh</li>
-                <li>Nimisha</li>
-                <li>Liya J</li>
-                <!-- Add as many names as you need here -->
-            </ul>
-        </div>
-
-    </div>
-    <script src="app.js"></script>
-</body>
+#feedback-area {
+    margin-bottom: 20px;
+    padding: 10px;
+}
+#correct-answer { 
+    color: #2c3e50; 
+    margin: 0;
+    font-size: 28px;
+    font-weight: normal;
+}
