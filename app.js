@@ -458,17 +458,31 @@ nextBtn.addEventListener('click', () => {
     loadNextQuestion();
 });
 
+// Force voices to load in the background for Windows browsers
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
+}
+
 // Pronunciation Event Listener
 speakBtn.addEventListener('click', () => {
-    // Check if the browser supports speech synthesis and a word is loaded
     if ('speechSynthesis' in window && currentWord) {
-        // We always pass currentWord.german because you want to hear the German word
+        // 1. Cancel any stuck speech in the background (Common Windows bug)
+        window.speechSynthesis.cancel();
+
         const utterance = new SpeechSynthesisUtterance(currentWord.german);
-        
-        // Force the system to select a German voice
         utterance.lang = 'de-DE'; 
         
-        // Speak the word
+        // 2. Explicitly find and attach a German voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const germanVoice = voices.find(voice => voice.lang === 'de-DE' || voice.lang === 'de_DE' || voice.name.includes('German'));
+        
+        if (germanVoice) {
+            utterance.voice = germanVoice;
+        }
+
+        // 3. Speak the word
         window.speechSynthesis.speak(utterance);
     } else {
         alert("Sorry, your browser doesn't support text-to-speech!");
