@@ -458,6 +458,18 @@ nextBtn.addEventListener('click', () => {
     loadNextQuestion();
 });
 
+// Function to extract just the main word and article
+function getCleanWord(text) {
+    // 1. Remove anything inside parentheses (e.g., example sentences, Pl., + D.)
+    let cleanText = text.replace(/\([^)]*\)/g, '');
+    
+    // 2. Remove the comma and everything after it (e.g., plural endings or conjugations)
+    cleanText = cleanText.split(',')[0];
+    
+    // 3. Remove any extra spaces left behind
+    return cleanText.trim();
+}
+
 // Force voices to load in the background for Windows browsers
 if ('speechSynthesis' in window) {
     window.speechSynthesis.onvoiceschanged = () => {
@@ -468,13 +480,14 @@ if ('speechSynthesis' in window) {
 // Pronunciation Event Listener
 speakBtn.addEventListener('click', () => {
     if ('speechSynthesis' in window && currentWord) {
-        // 1. Cancel any stuck speech in the background (Common Windows bug)
-        window.speechSynthesis.cancel();
+        window.speechSynthesis.cancel(); // Cancel stuck speech
 
-        const utterance = new SpeechSynthesisUtterance(currentWord.german);
+        // Pass the German word through our new cleaning function
+        const wordToRead = getCleanWord(currentWord.german);
+        const utterance = new SpeechSynthesisUtterance(wordToRead);
+        
         utterance.lang = 'de-DE'; 
         
-        // 2. Explicitly find and attach a German voice if available
         const voices = window.speechSynthesis.getVoices();
         const germanVoice = voices.find(voice => voice.lang === 'de-DE' || voice.lang === 'de_DE' || voice.name.includes('German'));
         
@@ -482,7 +495,6 @@ speakBtn.addEventListener('click', () => {
             utterance.voice = germanVoice;
         }
 
-        // 3. Speak the word
         window.speechSynthesis.speak(utterance);
     } else {
         alert("Sorry, your browser doesn't support text-to-speech!");
