@@ -80,3 +80,6 @@ button {
     font-size: 28px;
     font-weight: normal;
 }
+/* Pronunciation Button Styles */
+.speak-btn { background-color: #6f42c1; }
+.speak-btn:hover { background-color: #59339d; }
