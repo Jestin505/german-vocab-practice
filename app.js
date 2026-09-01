@@ -346,6 +346,7 @@ const checkBtn = document.getElementById('check-btn');
 const nextBtn = document.getElementById('next-btn');
 const feedbackArea = document.getElementById('feedback-area');
 const correctAnswerEl = document.getElementById('correct-answer');
+const speakBtn = document.getElementById('speak-btn');
 
 startBtn.addEventListener('click', () => {
     startScreen.classList.add('hidden');
@@ -415,6 +416,7 @@ function loadNextQuestion() {
         questionWordEl.textContent = "Please restart the quiz";
         checkBtn.classList.add('hidden');
         nextBtn.classList.add('hidden');
+        speakBtn.classList.add('hidden');
         feedbackArea.classList.add('hidden');
         return;
     }
@@ -454,4 +456,21 @@ checkBtn.addEventListener('click', () => {
 nextBtn.addEventListener('click', () => {
     questionCount++;
     loadNextQuestion();
+});
+
+// Pronunciation Event Listener
+speakBtn.addEventListener('click', () => {
+    // Check if the browser supports speech synthesis and a word is loaded
+    if ('speechSynthesis' in window && currentWord) {
+        // We always pass currentWord.german because you want to hear the German word
+        const utterance = new SpeechSynthesisUtterance(currentWord.german);
+        
+        // Force the system to select a German voice
+        utterance.lang = 'de-DE'; 
+        
+        // Speak the word
+        window.speechSynthesis.speak(utterance);
+    } else {
+        alert("Sorry, your browser doesn't support text-to-speech!");
+    }
 });
